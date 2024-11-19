@@ -2,8 +2,8 @@ import { LanguageEnum } from "./types";
 
 export type Translation = {
     registeredTextList: string;
-    obstampRegister: string;
-    obstampPaste: string;
+    qbstampRegister: string;
+    qbstampPaste: string;
     register: string;
     paste: string;
     textWasRegisteredInTheList: string;
@@ -15,8 +15,8 @@ export type Translation = {
 
 const translationEN: Translation = {
     registeredTextList: "Registered text list",
-    obstampRegister: "Obstamp: Register",
-    obstampPaste: "Obstamp: Paste",
+    qbstampRegister: "Qbstamp: Register",
+    qbstampPaste: "Qbstamp: Paste",
     register: "Register",
     paste: "Paste",
     textWasRegisteredInTheList: "Text was registered in the list.",
@@ -28,8 +28,8 @@ const translationEN: Translation = {
 
 const translationJA: Translation = {
     registeredTextList: "登録したテキストの一覧",
-    obstampRegister: "Obstamp: 登録",
-    obstampPaste: "Obstamp: 貼り付け",
+    qbstampRegister: "Qbstamp: 登録",
+    qbstampPaste: "Qbstamp: 貼り付け",
     register: "登録",
     paste: "貼り付け",
     textWasRegisteredInTheList: "テキストを登録しました",

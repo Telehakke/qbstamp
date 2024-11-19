@@ -15,7 +15,7 @@ export default defineConfig({
             formats: ["cjs"],
         },
         rollupOptions: {
-            external: ["obsidian"],
+            external: ["obsidian", "@codemirror/view"],
             plugins: [
                 replace({
                     preventAssignment: true,
