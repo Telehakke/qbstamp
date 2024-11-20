@@ -1,7 +1,7 @@
 {
-    "id": "obstamp",
-    "name": "Obstamp",
-    "version": "1.0.0",
+    "id": "qbstamp",
+    "name": "Qbstamp",
+    "version": "1.0.1",
     "minAppVersion": "1.5.3",
     "description": "Register and paste any text.",
     "author": "Telehakke",

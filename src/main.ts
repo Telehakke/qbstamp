@@ -20,23 +20,5 @@ export default class Obstamp extends Plugin {
         this.addSettingTab(
             new ObstampSettingTab(this.app, this, this.pluginStateRepository)
         );
-
-        this.app.workspace.containerEl.addEventListener(
-            "mousemove",
-            this.handleMouseMove,
-            true
-        );
     }
-
-    onunload(): void {
-        this.app.workspace.containerEl.removeEventListener(
-            "mousemove",
-            this.handleMouseMove,
-            true
-        );
-    }
-
-    private handleMouseMove = (event: MouseEvent): void => {
-        PluginContext.mouseEvent = event;
-    };
 }

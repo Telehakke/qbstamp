@@ -13,7 +13,7 @@ const CancelButton = (): JSX.Element => {
     };
 
     return (
-        <button className="obs-flex-1" onClick={handleClick}>
+        <button className="qbs-flex-1" onClick={handleClick}>
             {PluginContext.translation.cancel}
         </button>
     );

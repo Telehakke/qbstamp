@@ -1,6 +1,8 @@
 import { Editor, Menu, Notice, Plugin } from "obsidian";
 import PluginStateRepository from "./pluginStateRepository";
 import PluginContext from "./pluginContext";
+import { EditorView } from "@codemirror/view";
+import { Favorite } from "./types";
 
 abstract class PluginAction {
     private pluginStateRepository: PluginStateRepository;
@@ -27,33 +29,17 @@ abstract class PluginAction {
     };
 
     /**
-     * お気に入りの一覧をメニューに表示する
+     * ペースト実行時の処理
      */
-    protected showFavoritesMenu = (editor: Editor): void => {
-        const favorites = PluginContext.favoritesList.values;
-        if (favorites.length === 0) {
-            new Notice(PluginContext.translation.textNotRegisteredInTheList);
-            return;
-        }
+    protected handlePasteClick = (editor: Editor, favorite: Favorite) => {
+        // 選択したお気に入りテキストをカーソル位置に挿入する
+        const cursor = editor.getCursor();
+        editor.replaceRange(favorite.text, cursor);
 
-        const menu = new Menu();
-        favorites.forEach((v) => {
-            menu.addItem((item) => {
-                item.setTitle(v.text);
-                item.onClick(() => {
-                    // 選択したテキストをカーソル位置に挿入する
-                    const cursor = editor.getCursor();
-                    editor.replaceRange(v.text, cursor);
-
-                    // 挿入した文字数分、カーソルを移動する
-                    const offset = editor.posToOffset(cursor);
-                    const length = v.text.length;
-                    editor.setCursor(editor.offsetToPos(offset + length));
-                });
-            });
-        });
-
-        menu.showAtMouseEvent(PluginContext.mouseEvent);
+        // 挿入した文字数分、カーソルを移動する
+        const position = editor.posToOffset(cursor);
+        const length = favorite.text.length;
+        editor.setCursor(editor.offsetToPos(position + length));
     };
 }
 
@@ -77,12 +63,40 @@ export class Command extends PluginAction {
                 this.registerSelectedTextToFavorites(editor);
             },
         });
+
         this.plugin.addCommand({
             id: "paste",
             name: PluginContext.translation.paste,
             icon: "clipboard-paste",
             editorCallback: (editor) => {
-                this.showFavoritesMenu(editor);
+                const favorites = PluginContext.favoritesList.values;
+                if (favorites.length === 0) {
+                    new Notice(
+                        PluginContext.translation.textNotRegisteredInTheList
+                    );
+                    return;
+                }
+
+                const menu = new Menu();
+                favorites.forEach((favorite) => {
+                    menu.addItem((item) => {
+                        item.setTitle(favorite.text);
+                        item.onClick(() => {
+                            this.handlePasteClick(editor, favorite);
+                        });
+                    });
+                });
+
+                // お気に入り一覧のメニューをキャレット（テキストカーソル）の位置に表示する
+                // @ts-expect-error, not typed
+                const editorView = editor.cm as EditorView;
+                const cursor = editor.getCursor();
+                const position = editor.posToOffset(cursor);
+                const coordinate = editorView.coordsAtPos(position);
+                menu.showAtPosition({
+                    x: coordinate?.left ?? 0,
+                    y: coordinate?.top ?? 0,
+                });
             },
         });
     };
@@ -97,13 +111,14 @@ export class EditorMenu extends PluginAction {
     }
 
     /**
-     * 編集モードにおいて、右クリックで開くメニューへの登録
+     * 編集モードにおける、右クリックで開くメニューへの登録
      */
+    // prettier-ignore
     add = (): void => {
         this.plugin.registerEvent(
             this.plugin.app.workspace.on("editor-menu", (menu, editor) => {
                 menu.addItem((item) => {
-                    item.setTitle(PluginContext.translation.obstampRegister)
+                    item.setTitle(PluginContext.translation.qbstampRegister)
                         .setIcon("database")
                         .onClick(() => {
                             this.registerSelectedTextToFavorites(editor);
@@ -111,11 +126,19 @@ export class EditorMenu extends PluginAction {
                 });
 
                 menu.addItem((item) => {
-                    item.setTitle(PluginContext.translation.obstampPaste)
-                        .setIcon("clipboard-paste")
-                        .onClick(() => {
-                            this.showFavoritesMenu(editor);
+                    item.setTitle(PluginContext.translation.qbstampPaste)
+                        .setIcon("clipboard-paste");
+
+                    // @ts-expect-error, not typed
+                    const submenu = item.setSubmenu() as Menu;
+                    PluginContext.favoritesList.values.forEach((favorite) => {
+                        submenu.addItem((item) => {
+                            item.setTitle(favorite.text);
+                            item.onClick(() => {
+                                this.handlePasteClick(editor, favorite);
+                            });
                         });
+                    });
                 });
             })
         );

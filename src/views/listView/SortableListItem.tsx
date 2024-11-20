@@ -45,18 +45,18 @@ const SortableListItem = ({
     };
 
     return (
-        <div className="obs-sortable-item" ref={setNodeRef} {...style}>
+        <div className="qbs-sortable-item" ref={setNodeRef} {...style}>
             <input
                 type="checkbox"
                 id={favorite.id}
                 onChange={handleChange}
                 checked={checksList.find(favorite.id)?.checked}
             />
-            <label className="obs-flex-1" htmlFor={favorite.id}>
+            <label className="qbs-flex-1" htmlFor={favorite.id}>
                 {favorite.text}
             </label>
             <button
-                className="clickable-icon obs-drag-handle"
+                className="clickable-icon qbs-drag-handle"
                 ref={setActivatorNodeRef}
                 {...attributes}
                 {...listeners}
