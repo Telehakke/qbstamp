@@ -15,7 +15,7 @@ const CancelAndDeleteButtons = ({
     return (
         <>
             {length > 0 && (
-                <div className="obs-row-buttons">
+                <div className="qbs-row-buttons">
                     <CancelButton />
                     <DeleteButton
                         pluginStateRepository={pluginStateRepository}

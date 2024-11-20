@@ -1,18 +1,18 @@
-div.obs-sortable-item {
+div.qbs-sortable-item {
     display: flex;
     align-items: center;
     margin: 8px 0;
 }
 
-button.obs-drag-handle {
+button.qbs-drag-handle {
     touch-action: none;
 }
 
-div.obs-row-buttons {
+div.qbs-row-buttons {
     display: flex;
     gap: 8px;
 }
 
-.obs-flex-1 {
+.qbs-flex-1 {
     flex: 1 1 0;
 }

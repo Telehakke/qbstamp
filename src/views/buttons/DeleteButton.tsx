@@ -23,7 +23,7 @@ const DeleteButton = ({
     };
 
     return (
-        <button className="obs-flex-1 mod-warning" onClick={handleClick}>
+        <button className="qbs-flex-1 mod-warning" onClick={handleClick}>
             {PluginContext.translation.delete}
         </button>
     );
