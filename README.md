@@ -22,10 +22,10 @@ Add a feature to Obsidian that can register and paste any text.
 ### Command / コマンド
 
 It can also be operated from the command palette.  
-Type “obstamp” in the search box.
+Type “qbstamp” in the search box.
 
 コマンドパレットからも操作できます  
-検索ボックスに「obstamp」と入力してください
+検索ボックスに「qbstamp」と入力してください
 
 ![demo02](readmeAssets/demo02.png)
 
